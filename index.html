@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>জার্সি রেজিস্ট্রেশন | XVII's Wave</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+        .form-group { margin-bottom: 15px; }
+        input, select { width: 100%; padding: 8px; }
+        button { background: #1a73e8; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+        .payment-info { border: 1px solid #ddd; padding: 15px; margin: 10px 0; }
+        #message { 
+            margin-top: 15px; 
+            padding: 10px; 
+            border-radius: 4px; 
+            text-align: center;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>জার্সি রেজিস্ট্রেশন ফর্ম</h1>
+    <form id="registrationForm">
+        <!-- ব্যক্তিগত তথ্য -->
+        <div class="form-group">
+            <label>নাম:</label>
+            <input type="text" name="name" required>
+        </div>
+        <div class="form-group">
+            <label>ফোন নম্বর:</label>
+            <input type="tel" name="phone" required>
+        </div>
+        <div class="form-group">
+            <label>জার্সি সাইজ:</label>
+            <select name="size" required>
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
+            </select>
+        </div>
+
+        <!-- প্যাকেজ ও পেমেন্ট -->
+        <div class="payment-info">
+            <h3>পেমেন্ট ডিটেইলস</h3>
+            <div class="form-group">
+                <label>প্যাকেজ সিলেক্ট করুন:</label><br>
+                <input type="radio" name="package" value="350" required> জার্সি (৩৫০ টাকা)<br>
+                <input type="radio" name="package" value="450"> জার্সি + সকালের খাবার (৪৫০ টাকা)
+            </div>
+            <div class="form-group">
+                <label>পেমেন্ট মেথড:</label>
+                <select name="payment_method" required>
+                    <option value="Bkash">বিকাশ</option>
+                    <option value="Rocket">রকেট</option>
+                    <option value="Nagad">নগদ</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>পেমেন্ট নম্বর (যে নম্বরে টাকা পাঠাবেন):</label>
+                <input type="text" name="payment_number" placeholder="01XXXXXXXXX" required>
+            </div>
+            <div class="form-group">
+                <label>ট্রাঞ্জেকশন আইডি (TrxID):</label>
+                <input type="text" name="trx_id" required>
+            </div>
+        </div>
+
+        <button type="submit">জমা দিন</button>
+    </form>
+
+    <!-- Message Display Area -->
+    <div id="message"></div>
+
+    <!-- Payment Instructions -->
+    <div class="payment-info">
+        <h3>পেমেন্ট করার নিয়ম:</h3>
+        <p>১. বিকাশ/রকেট/নগদ এ <strong>017XXXXXXXX</strong> নম্বরে টাকা পাঠান।<br>
+        ২. ট্রাঞ্জেকশন আইডি (TrxID) নোট করুন।<br>
+        ৩. TrxID এবং পেমেন্ট নম্বর ফর্মে বসান।</p>
+    </div>
+
+    <script>
+        // Script URL সরিয়ে এখানে আনুন
+        const scriptURL = "https://script.google.com/macros/s/AKfycbyyU-sPRo5LHZLr5SRyYQ1htmWdKQbyto_q6-KrN4zTP1qphG2ESrnqSS1Z7n3tNzIPfw/exec";
+
+        document.getElementById("registrationForm").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            fetch(scriptURL, { 
+                method: "POST", 
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data) 
+            })
+            .then(() => {
+                document.getElementById("message").innerHTML = 
+                    '<div class="success">✅ রেজিস্ট্রেশন সফল!</div>';
+                e.target.reset();
+            })
+            .catch(() => {
+                document.getElementById("message").innerHTML = 
+                    '<div class="error">❌ ত্রুটি হয়েছে, আবার চেষ্টা করুন।</div>';
+            });
+        });
+    </script>
+</body>
+</html>
